@@ -94,12 +94,27 @@
 
   &__controls {
     @include animation('carousel-reveal 1s');
-    margin-left: 50%;
-    transform: translateX(-50%);
     position: absolute;
     bottom: halve($inuit-base-spacing-unit);
     text-align: center;
     z-index: 1;
+
+    &--pagination {
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &--play {
+      g {
+        stroke: $colored-icon-color;
+      }
+
+      &:hover {
+        g {
+          stroke: $active-colored-icon-color;
+        }
+      }
+    }
   }
 
   &__control {

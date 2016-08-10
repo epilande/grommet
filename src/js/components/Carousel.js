@@ -7,6 +7,8 @@ import Tile from './Tile';
 import Button from './Button';
 import Previous from './icons/base/Previous';
 import Next from './icons/base/Next';
+import Play from './icons/base/Play';
+import Pause from './icons/base/Pause';
 import DOM from '../utils/DOM';
 import CSSClassnames from '../utils/CSSClassnames';
 
@@ -26,6 +28,7 @@ export default class Carousel extends Component {
     this._onSelect = this._onSelect.bind(this);
     this._onMouseOver = this._onMouseOver.bind(this);
     this._onMouseOut = this._onMouseOut.bind(this);
+    this._togglePlay = this._togglePlay.bind(this);
     this._onResize = this._onResize.bind(this);
     this._slidePrev = this._slidePrev.bind(this);
     this._slideNext = this._slideNext.bind(this);
@@ -171,6 +174,11 @@ export default class Carousel extends Component {
     }
   }
 
+  _togglePlay () {
+    console.log('play: ', !this.state.slide);
+    this.setState({slide: !this.state.slide});
+  }
+
   _onResize () {
     this.setState({
       width: this.refs.carousel.offsetWidth
@@ -220,6 +228,23 @@ export default class Carousel extends Component {
     }
 
     return nextButton;
+  }
+
+  _renderPlayButton () {
+    let playButton = undefined;
+    if (this.props.autoplay) {
+      playButton = (
+        <Button
+          className={`${CLASS_ROOT}__controls ${CLASS_ROOT}__controls--play`}
+          plain={true} onClick={this._togglePlay}>
+          {this.state.slide ?
+            <Pause size="large" /> : <Play size="large" />
+          }
+        </Button>
+      );
+    }
+
+    return playButton;
   }
 
   render () {
@@ -275,8 +300,16 @@ export default class Carousel extends Component {
         </div>
         {this._renderPrevButton()}
         {this._renderNextButton()}
-        <Box className={CLASS_ROOT + "__controls"} direction="row"
-          justify="center" responsive={false}>
+        {this._renderPlayButton()}
+        <Box
+          className={`
+            ${CLASS_ROOT}__controls
+            ${CLASS_ROOT}__controls--pagination
+          `}
+          direction="row"
+          justify="center"
+          responsive={false}
+        >
           {controls}
         </Box>
       </div>
